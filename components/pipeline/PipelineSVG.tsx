@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { siWhatsapp, siPostgresql } from "simple-icons";
+import { muteBrand } from "@/lib/color";
 import { useReducedMotion } from "@/lib/motion";
 
 /**
@@ -8,37 +10,74 @@ import { useReducedMotion } from "@/lib/motion";
  * Real stages: WHATSAPP → INTENT → RAG → TOOLS → POSTGRES, branching to
  * HUMAN ESCALATION / DASHBOARD. A signal packet traverses every ~7s;
  * every third cycle it routes to HUMAN ESCALATION and the warn dot blinks.
- * Plain rAF + getPointAtLength — no canvas, no motion library.
+ * Service nodes carry muted brand marks that flash to full brand color as
+ * the packet passes. Clicking HUMAN ESCALATION escalates to a human — it
+ * scrolls to the contact section.
  */
 
-const NODES = [
-  { label: "WHATSAPP", x: 8, w: 104, cy: 130 },
-  { label: "INTENT", x: 180, w: 84, cy: 130 },
-  { label: "RAG", x: 332, w: 64, cy: 130 },
-  { label: "TOOLS", x: 464, w: 80, cy: 130 },
-  { label: "POSTGRES", x: 612, w: 104, cy: 130 },
-  { label: "HUMAN ESCALATION", x: 858, w: 178, cy: 64 },
-  { label: "DASHBOARD", x: 858, w: 124, cy: 196 },
+type HeroIcon = { path: string; hex: string; muted: string };
+const icons: Record<string, HeroIcon> = {
+  WHATSAPP: { path: siWhatsapp.path, hex: `#${siWhatsapp.hex}`, muted: muteBrand(`#${siWhatsapp.hex}`) },
+  POSTGRES: { path: siPostgresql.path, hex: `#${siPostgresql.hex}`, muted: muteBrand(`#${siPostgresql.hex}`) },
+};
+
+const GAP = 68;
+const MAIN_CY = 130;
+const ICON_W = 20;
+
+const MAIN_SPEC = [
+  { label: "WHATSAPP", w: 104 + ICON_W },
+  { label: "INTENT", w: 84 },
+  { label: "RAG", w: 64 },
+  { label: "TOOLS", w: 80 },
+  { label: "POSTGRES", w: 104 + ICON_W },
 ];
 
-const EDGES = [
-  { d: "M112 130 H180", delay: 500 },
-  { d: "M264 130 H332", delay: 580 },
-  { d: "M396 130 H464", delay: 660 },
-  { d: "M544 130 H612", delay: 740 },
-  { d: "M716 130 H790 Q798 130 798 122 V72 Q798 64 806 64 H858", delay: 820 },
-  { d: "M716 130 H790 Q798 130 798 138 V188 Q798 196 806 196 H858", delay: 820 },
+type Node = { label: string; x: number; w: number; cy: number };
+
+const MAIN: Node[] = (() => {
+  let x = 8;
+  return MAIN_SPEC.map((s) => {
+    const n = { ...s, x, cy: MAIN_CY };
+    x += s.w + GAP;
+    return n;
+  });
+})();
+
+const LAST_RIGHT = MAIN[MAIN.length - 1].x + MAIN[MAIN.length - 1].w; // 756
+const JUNCTION = LAST_RIGHT + 74; // straight run before the fork
+const BRANCH_X = JUNCTION + 68;
+
+const ESCALATION: Node = { label: "HUMAN ESCALATION", x: BRANCH_X, w: 178, cy: 64 };
+const DASHBOARD: Node = { label: "DASHBOARD", x: BRANCH_X, w: 124, cy: 196 };
+const NODES: Node[] = [...MAIN, ESCALATION, DASHBOARD];
+
+const EDGES: { d: string; delay: number }[] = [
+  ...MAIN.slice(0, -1).map((n, i) => ({
+    d: `M${n.x + n.w} ${MAIN_CY} H${MAIN[i + 1].x}`,
+    delay: 500 + i * 80,
+  })),
+  {
+    d: `M${LAST_RIGHT} ${MAIN_CY} H${JUNCTION} Q${JUNCTION + 8} ${MAIN_CY} ${JUNCTION + 8} ${MAIN_CY - 8} V72 Q${JUNCTION + 8} 64 ${JUNCTION + 16} 64 H${BRANCH_X}`,
+    delay: 820,
+  },
+  {
+    d: `M${LAST_RIGHT} ${MAIN_CY} H${JUNCTION} Q${JUNCTION + 8} ${MAIN_CY} ${JUNCTION + 8} ${MAIN_CY + 8} V188 Q${JUNCTION + 8} 196 ${JUNCTION + 16} 196 H${BRANCH_X}`,
+    delay: 820,
+  },
 ];
 
-const ROUTE_MAIN =
-  "M60 130 H790 Q798 130 798 138 V188 Q798 196 806 196 H920";
-const ROUTE_ESC =
-  "M60 130 H790 Q798 130 798 122 V72 Q798 64 806 64 H947";
+const ROUTE_MAIN = `M${MAIN[0].x + MAIN[0].w / 2} ${MAIN_CY} H${JUNCTION} Q${JUNCTION + 8} ${MAIN_CY} ${JUNCTION + 8} ${MAIN_CY + 8} V188 Q${JUNCTION + 8} 196 ${JUNCTION + 16} 196 H${DASHBOARD.x + DASHBOARD.w / 2}`;
+const ROUTE_ESC = `M${MAIN[0].x + MAIN[0].w / 2} ${MAIN_CY} H${JUNCTION} Q${JUNCTION + 8} ${MAIN_CY} ${JUNCTION + 8} ${MAIN_CY - 8} V72 Q${JUNCTION + 8} 64 ${JUNCTION + 16} 64 H${ESCALATION.x + ESCALATION.w / 2}`;
 
 const TRAVEL_MS = 4500;
 const CYCLE_MS = 7000;
 const easeInOut = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+function scrollToContact() {
+  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+}
 
 export function PipelineSVG() {
   const reduced = useReducedMotion();
@@ -114,12 +153,12 @@ export function PipelineSVG() {
         c.setAttribute("cx", String(p.x));
         c.setAttribute("cy", String(p.y));
       });
-      // pulse nodes as the packet passes their center
+      // pulse nodes (and flash their brand icon) as the packet passes
       const head = path.getPointAtLength(d);
       NODES.forEach((n, i) => {
         const cx = n.x + n.w / 2;
         if (lastX < cx && head.x >= cx && Math.abs(head.y - n.cy) < 40) {
-          if (i < 5 || (i === 5) === escalating) pulse(i);
+          if (i < MAIN.length || (i === MAIN.length) === escalating) pulse(i);
         }
       });
       lastX = head.x;
@@ -167,55 +206,83 @@ export function PipelineSVG() {
       </g>
 
       {/* nodes */}
-      {NODES.map((n, i) => (
-        <g
-          key={n.label}
-          ref={(el) => {
-            nodeRefs.current[i] = el;
-          }}
-          className="pipeline-node"
-        >
-          <rect
-            x={n.x}
-            y={n.cy - 18}
-            width={n.w}
-            height={36}
-            rx={6}
-            fill="var(--color-raised)"
-            stroke="var(--color-line)"
-          />
-          <text
-            x={n.x + n.w / 2 + (n.label === "HUMAN ESCALATION" ? -6 : 0)}
-            y={n.cy + 4}
-            textAnchor="middle"
-            fill="var(--color-fg2)"
-            style={{
-              font: "500 11px var(--font-mono)",
-              letterSpacing: "0.08em",
+      {NODES.map((n, i) => {
+        const icon = icons[n.label];
+        const isEscalation = n.label === "HUMAN ESCALATION";
+        return (
+          <g
+            key={n.label}
+            ref={(el) => {
+              nodeRefs.current[i] = el;
             }}
+            className={`pipeline-node ${isEscalation ? "cursor-pointer" : ""}`}
+            {...(isEscalation
+              ? {
+                  role: "link",
+                  tabIndex: 0,
+                  "aria-label": "Escalate to a human — go to contact",
+                  onClick: scrollToContact,
+                  onKeyDown: (e: React.KeyboardEvent) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      scrollToContact();
+                    }
+                  },
+                }
+              : {})}
           >
-            {n.label}
-          </text>
-          {n.label === "HUMAN ESCALATION" && (
-            <circle
-              ref={warnDotRef}
-              cx={n.x + n.w - 14}
-              cy={n.cy}
-              r="3"
-              fill="var(--color-fg3)"
+            {isEscalation && <title>Escalate to a human → contact</title>}
+            <rect
+              x={n.x}
+              y={n.cy - 18}
+              width={n.w}
+              height={36}
+              rx={6}
+              fill="var(--color-raised)"
+              stroke="var(--color-line)"
             />
-          )}
-          {n.label === "DASHBOARD" && (
-            <circle
-              cx={n.x + n.w - 14}
-              cy={n.cy}
-              r="3"
-              fill="var(--color-live)"
-              className="dot-pulse"
-            />
-          )}
-        </g>
-      ))}
+            {icon && (
+              <path
+                className="node-icon"
+                d={icon.path}
+                transform={`translate(${n.x + 13} ${n.cy - 7}) scale(0.583)`}
+                fill={icon.muted}
+                style={{ "--brand-full": icon.hex } as React.CSSProperties}
+              />
+            )}
+            <text
+              x={n.x + n.w / 2 + (icon ? ICON_W / 2 : 0)}
+              y={n.cy + 4}
+              textAnchor="middle"
+              fill="var(--color-fg2)"
+              style={{
+                font: "500 11px var(--font-mono)",
+                letterSpacing: "0.08em",
+              }}
+            >
+              {n.label}
+            </text>
+            {isEscalation && (
+              <circle
+                ref={warnDotRef}
+                cx={n.x + n.w - 14}
+                cy={n.cy}
+                r="3"
+                fill="var(--color-fg3)"
+              />
+            )}
+            {n.label === "DASHBOARD" && (
+              <circle
+                cx={n.x + n.w - 14}
+                cy={n.cy}
+                r="3"
+                fill="var(--color-live)"
+                className="dot-pulse"
+              />
+            )}
+          </g>
+        );
+      })}
     </svg>
   );
 }

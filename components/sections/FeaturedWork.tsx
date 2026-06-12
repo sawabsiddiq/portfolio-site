@@ -3,6 +3,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StatusDot } from "@/components/ui/StatusDot";
 import { Chip } from "@/components/ui/Chip";
 import { MediaFrame } from "@/components/ui/MediaFrame";
+import { Tracked } from "@/components/ui/Tracked";
 import { FlowDiagram } from "@/components/pipeline/FlowDiagram";
 import { Reveal } from "@/lib/motion";
 import { featured } from "@/data/site";
@@ -21,6 +22,7 @@ export function FeaturedWork() {
         <div className="mt-16 border-t border-line">
           {featured.map((p, i) => (
             <Reveal key={p.slug} as="div" className="border-b border-line">
+              <Tracked>
               <Link
                 href={`/work/${p.slug}`}
                 className="group/row block px-2 py-12 transition-colors duration-[var(--dur-fast)] hover:bg-overlay lg:py-16"
@@ -71,6 +73,7 @@ export function FeaturedWork() {
                   </div>
                 </div>
               </Link>
+              </Tracked>
             </Reveal>
           ))}
         </div>

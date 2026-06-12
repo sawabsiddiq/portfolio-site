@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { PipelineSVG } from "@/components/pipeline/PipelineSVG";
+import { HeroCanvas } from "@/components/pipeline/HeroCanvas";
 import { hero, site } from "@/data/site";
 
 const seq = (ms: number) => ({ "--seq": `${ms}ms` }) as React.CSSProperties;
@@ -36,7 +37,9 @@ export function Hero() {
         </div>
 
         <div className="mt-16 hidden md:block">
-          <PipelineSVG />
+          <HeroCanvas>
+            <PipelineSVG />
+          </HeroCanvas>
         </div>
         {/* below md the scaled SVG labels turn illegible: simplified static chain (§7) */}
         <div className="mt-12 flex flex-col gap-0 md:hidden" aria-hidden>

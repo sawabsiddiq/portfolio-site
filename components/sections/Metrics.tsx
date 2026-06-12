@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Reveal, useCountUp } from "@/lib/motion";
+import { Tracked } from "@/components/ui/Tracked";
 import { metrics } from "@/data/site";
 
 function MetricCell({
@@ -70,12 +71,14 @@ export function Metrics() {
         </Reveal>
       </div>
       <div className="mt-12 border-y border-line bg-raised">
-        {/* gap-px over --color-line renders the 1px cell separators */}
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-line sm:grid-cols-3 lg:grid-cols-6">
-          {metrics.map((m, i) => (
-            <MetricCell key={m.label} {...m} index={i} />
-          ))}
-        </div>
+        <Tracked>
+          {/* gap-px over --color-line renders the 1px cell separators */}
+          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-line sm:grid-cols-3 lg:grid-cols-6">
+            {metrics.map((m, i) => (
+              <MetricCell key={m.label} {...m} index={i} />
+            ))}
+          </div>
+        </Tracked>
       </div>
     </section>
   );

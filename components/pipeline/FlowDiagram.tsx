@@ -1,18 +1,21 @@
 import type { DiagramSpec } from "@/data/site";
+import { nodeIcon } from "@/lib/brand-icons";
 
 /**
  * Node-graph diagram in the site's visual language (design plan §3.2):
  * a horizontal chain of stages with an optional terminal fork.
  * Pure server-rendered SVG; the packet runs on row hover via CSS offset-path.
+ * Service nodes carry their brand mark (muted), n8n-canvas style.
  */
 
 const CHAR_W = 6.8;
 const NODE_H = 32;
 const GAP = 44;
 const PAD = 4;
+const ICON_W = 19; // 12px glyph + breathing room inside the chip
 
 function nodeWidth(label: string) {
-  return Math.round(label.length * CHAR_W + 28);
+  return Math.round(label.length * CHAR_W + 28) + (nodeIcon(label) ? ICON_W : 0);
 }
 
 export function FlowDiagram({
@@ -98,28 +101,38 @@ export function FlowDiagram({
           }}
         />
       )}
-      {allNodes.map((n) => (
-        <g key={n.label} className="pipeline-node">
-          <rect
-            x={n.x}
-            y={n.cy - NODE_H / 2}
-            width={n.w}
-            height={NODE_H}
-            rx={6}
-            fill="var(--color-raised)"
-            stroke="var(--color-line)"
-          />
-          <text
-            x={n.x + n.w / 2}
-            y={n.cy + 4}
-            textAnchor="middle"
-            fill="var(--color-fg2)"
-            style={{ font: "500 11px var(--font-mono)", letterSpacing: "0.08em" }}
-          >
-            {n.label}
-          </text>
-        </g>
-      ))}
+      {allNodes.map((n) => {
+        const icon = nodeIcon(n.label);
+        return (
+          <g key={n.label} className="pipeline-node">
+            <rect
+              x={n.x}
+              y={n.cy - NODE_H / 2}
+              width={n.w}
+              height={NODE_H}
+              rx={6}
+              fill="var(--color-raised)"
+              stroke="var(--color-line)"
+            />
+            {icon && (
+              <path
+                d={icon.path}
+                transform={`translate(${n.x + 11} ${n.cy - 6}) scale(0.5)`}
+                fill={icon.muted}
+              />
+            )}
+            <text
+              x={n.x + n.w / 2 + (icon ? ICON_W / 2 : 0)}
+              y={n.cy + 4}
+              textAnchor="middle"
+              fill="var(--color-fg2)"
+              style={{ font: "500 11px var(--font-mono)", letterSpacing: "0.08em" }}
+            >
+              {n.label}
+            </text>
+          </g>
+        );
+      })}
     </svg>
   );
 }

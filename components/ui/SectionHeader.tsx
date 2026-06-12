@@ -26,12 +26,20 @@ export function SectionHeader({
   );
 }
 
-/** Section divider: 1px edge with a single node-dot — the pipeline motif (§3.2). */
+/**
+ * Section divider: 1px edge with a single node-dot — the pipeline motif
+ * (§3.2). A packet runs the line once when the divider scrolls into view.
+ */
 export function SectionDivider() {
   return (
-    <div aria-hidden className="mx-auto flex w-full max-w-6xl items-center px-6 lg:px-12">
+    <Reveal
+      aria-hidden
+      className="mx-auto flex w-full max-w-6xl items-center px-6 lg:px-12"
+    >
       <span className="size-1.5 shrink-0 rounded-full bg-line-strong" />
-      <span className="h-px w-full bg-line" />
-    </div>
+      <span className="relative h-px w-full bg-line">
+        <span className="divider-packet" />
+      </span>
+    </Reveal>
   );
 }

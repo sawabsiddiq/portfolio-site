@@ -6,6 +6,7 @@ export const site = {
   phone: "+971 501 484 570",
   linkedin: "https://linkedin.com/in/sawabsiddiq",
   github: "https://github.com/sawabsiddiq",
+  repo: "https://github.com/sawabsiddiq/portfolio-site",
   location: "Dubai, UAE",
   resume: "/Sawab-P-Resume.pdf",
 };

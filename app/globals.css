@@ -235,6 +235,109 @@ body {
   background-size: 100% 1px;
 }
 
+/* ---- Brand icons: monochrome at rest, brand-tinted on row hover ---- */
+.chip-icon {
+  fill: var(--color-fg3);
+  transition: fill var(--dur-fast) var(--ease-out-expo);
+}
+.group\/row:hover .chip-icon,
+.group\/row:focus-within .chip-icon {
+  fill: var(--brand, var(--color-fg3));
+}
+
+/* packet pass: the node's brand mark flashes to full brand color */
+.node-icon {
+  transition: fill var(--dur-fast) var(--ease-out-expo);
+}
+.pipeline-node.is-pulsing .node-icon {
+  fill: var(--brand-full);
+}
+.pipeline-node[role="link"]:focus-visible rect {
+  stroke: var(--color-signal);
+}
+
+/* ---- Hero workflow canvas: n8n-style dot grid + cursor lamp ---- */
+.hero-canvas::before,
+.hero-canvas::after {
+  content: "";
+  position: absolute;
+  inset: -24px 0;
+  background-image: radial-gradient(var(--color-line) 1px, transparent 1.5px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+.hero-canvas::before {
+  opacity: 0.55;
+}
+.hero-canvas::after {
+  background-image: radial-gradient(var(--color-line-strong) 1.5px, transparent 2px);
+  opacity: calc(var(--canvas-on, 0) * 1);
+  transition: opacity var(--dur-base) var(--ease-out-expo);
+  -webkit-mask-image: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    black 30%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    black 30%,
+    transparent 100%
+  );
+}
+
+/* ---- Cursor sheen: the flashlight over the instrument panel ---- */
+.glow-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--glow-o, 0);
+  transition: opacity var(--dur-base) var(--ease-out-expo);
+  background: radial-gradient(
+    420px circle at var(--gx, -300px) var(--gy, -300px),
+    color-mix(in srgb, var(--color-fg) 4.5%, transparent),
+    transparent 70%
+  );
+}
+
+/* ---- Divider packet: one pass when the divider enters view ---- */
+.divider-packet {
+  position: absolute;
+  top: -1.5px;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  opacity: 0;
+}
+.reveal.is-in .divider-packet {
+  animation: divider-run 900ms var(--ease-inout) 250ms 1 both;
+}
+@keyframes divider-run {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    left: calc(100% - 4px);
+    opacity: 0;
+  }
+}
+
+/* touch devices: no cursor-driven layers */
+@media (hover: none) {
+  .hero-canvas::after,
+  .glow-overlay {
+    display: none;
+  }
+}
+
 /* ---- Hero radial glow: the single permitted gradient (§2.1) ---- */
 .hero-glow {
   background: radial-gradient(
@@ -265,10 +368,14 @@ body {
   .dot-pulse,
   .dot-blink,
   .mini-packet,
-  .group\/row:hover .mini-packet {
+  .group\/row:hover .mini-packet,
+  .reveal.is-in .divider-packet {
     animation: none;
   }
-  .pipeline-packet {
+  .pipeline-packet,
+  .divider-packet,
+  .hero-canvas::after,
+  .glow-overlay {
     display: none;
   }
 }
