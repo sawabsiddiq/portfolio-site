@@ -330,11 +330,19 @@ body {
   }
 }
 
-/* touch devices: no cursor-driven layers */
+/* touch devices: no cursor-driven layers; their reveals carry the color instead */
 @media (hover: none) {
   .hero-canvas::after,
   .glow-overlay {
     display: none;
+  }
+  /* no hover to reveal the brand tint — show it at rest */
+  .chip-icon {
+    fill: var(--brand, var(--color-fg3));
+  }
+  /* mini-diagram packet runs once when the row scrolls into view */
+  .reveal.is-in .mini-packet {
+    animation: mini-packet 2.4s var(--ease-inout) 600ms 1 both;
   }
 }
 
@@ -369,6 +377,7 @@ body {
   .dot-blink,
   .mini-packet,
   .group\/row:hover .mini-packet,
+  .reveal.is-in .mini-packet,
   .reveal.is-in .divider-packet {
     animation: none;
   }

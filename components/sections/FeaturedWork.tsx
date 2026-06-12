@@ -25,7 +25,7 @@ export function FeaturedWork() {
               <Tracked>
               <Link
                 href={`/work/${p.slug}`}
-                className="group/row block px-2 py-12 transition-colors duration-[var(--dur-fast)] hover:bg-overlay lg:py-16"
+                className="group/row block px-2 py-12 transition-colors duration-[var(--dur-fast)] hover:bg-overlay active:bg-overlay lg:py-16"
               >
                 <div className="flex items-baseline justify-between gap-4">
                   <p className="mono-label text-fg3">

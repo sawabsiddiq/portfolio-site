@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { PipelineSVG } from "@/components/pipeline/PipelineSVG";
+import { MobilePipeline } from "@/components/pipeline/MobilePipeline";
 import { HeroCanvas } from "@/components/pipeline/HeroCanvas";
 import { hero, site } from "@/data/site";
 
@@ -41,16 +42,11 @@ export function Hero() {
             <PipelineSVG />
           </HeroCanvas>
         </div>
-        {/* below md the scaled SVG labels turn illegible: simplified static chain (§7) */}
-        <div className="mt-12 flex flex-col gap-0 md:hidden" aria-hidden>
-          {["WHATSAPP", "AGENT", "POSTGRES", "HUMAN ESCALATION"].map((label, i) => (
-            <div key={label} className="flex flex-col items-start">
-              {i > 0 && <span className="ml-10 h-5 w-px bg-line-strong" />}
-              <span className="mono-label rounded-[var(--radius-sm)] border border-line bg-raised px-4 py-2.5 text-fg2">
-                {label}
-              </span>
-            </div>
-          ))}
+        {/* below md the scaled SVG labels turn illegible: vertical variant (§7) */}
+        <div className="mt-12 md:hidden">
+          <HeroCanvas>
+            <MobilePipeline />
+          </HeroCanvas>
         </div>
 
         <p

@@ -171,6 +171,15 @@ export function NavBar() {
                 RESUME ↓
               </a>
             </li>
+            <li
+              className="hero-seq mt-6"
+              style={{ "--seq": "240ms" } as React.CSSProperties}
+            >
+              <span className="mono-label inline-flex items-center gap-2 text-fg3">
+                <span aria-hidden className="size-2 rounded-full bg-live dot-pulse" />
+                OPEN TO WORK
+              </span>
+            </li>
           </ul>
         </div>
       )}
