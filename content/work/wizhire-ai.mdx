@@ -1,0 +1,75 @@
+---
+title: WizHire AI — Recruitment Intelligence Platform
+outcome: AI recruitment platform automating job creation, resume ingestion, candidate screening, interview analysis, scoring, and ranking.
+role: AI Engineer / Full-stack Workflow Engineer
+domain: HR tech
+status: production
+statusLabel: PRODUCTION
+timeline: 2025 — PRESENT
+stack:
+  - React
+  - Vite
+  - Supabase
+  - OpenAI
+  - n8n
+  - Recharts
+  - Tailwind CSS
+  - Webhooks
+  - Outlook
+impact:
+  - value: "100%"
+    label: Applications scored against the same rubric
+  - value: "5"
+    label: n8n workflows from application to ranking
+  - value: "RBAC"
+    label: Role-based access for hiring teams
+diagram:
+  stages:
+    - APPLICATION
+    - CV PARSE
+    - SCREENING
+    - SCORING
+  branches:
+    - INTERVIEW AI
+    - RANKING
+order: 2
+---
+
+## PROBLEM
+
+Hiring teams need to process applications faster, score candidates consistently, reduce manual resume review, and keep visibility across jobs, interviews, and candidate performance. Manual screening doesn't scale, and worse, it isn't consistent — two reviewers score the same CV differently.
+
+## MY ROLE
+
+I built the platform across both halves: the n8n workflow layer (application submission, job creation, CV scanning, interview transcription, interview completion) and the React/Supabase product on top of it — screens, scoring views, analytics, and access control. I also wrote the SRS and the production-readiness documentation.
+
+## SOLUTION ARCHITECTURE
+
+- AI-powered job posting creation
+- Candidate application ingestion via webhook and form workflows
+- CV parsing into structured candidate records
+- Rubric-based resume screening and scoring — every candidate measured against the same criteria
+- Voice interview transcription and AI analysis
+- Weighted ranking and AI-generated candidate summaries
+- Role-based access control and team permissions
+- Analytics dashboard with score visualizations, backed by Supabase
+
+## TECHNICAL DECISIONS
+
+**Rubrics over vibes.** Screening prompts are built around explicit, weighted rubrics rather than "rate this candidate." That made scores explainable to hiring managers and comparable across candidates — the core product promise.
+
+**Workflows decoupled from the app.** The n8n layer communicates with the product through webhooks and the database, so screening logic can change without redeploying the frontend, and the app stays responsive while long-running AI steps process asynchronously.
+
+**Database-backed everything.** Scores, transcripts, rankings, and summaries all persist to Supabase, which is what makes hiring analytics possible rather than just per-candidate AI output.
+
+## IMPACT
+
+Repeatable screening steps were fully automated, candidate evaluation became consistent across the team, manual review effort dropped to the shortlist stage, and hiring decisions gained a data trail.
+
+## WHAT I LEARNED
+
+AI scoring is only trusted when it's explainable. The feature that made stakeholders comfortable wasn't a better model — it was showing *why* a candidate scored 7.2 against the rubric, criterion by criterion.
+
+<Privacy>
+Candidate data shown in any demo material is synthetic. No real applicant records, CVs, or interview transcripts are exposed.
+</Privacy>

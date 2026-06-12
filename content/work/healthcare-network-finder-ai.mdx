@@ -1,0 +1,72 @@
+---
+title: Healthcare Network Finder AI
+outcome: Bilingual AI assistant answering insurance questions and locating in-network clinics, hospitals, and pharmacies with location-aware search.
+role: AI Solution Architect / RAG Workflow Engineer
+domain: Healthcare / insurance
+status: poc
+statusLabel: POC
+timeline: 2025
+stack:
+  - OpenAI
+  - Pinecone
+  - n8n
+  - WhatsApp
+  - Supabase
+  - Google Places API
+  - Geocoding API
+  - Google Sheets
+impact:
+  - value: "4,400+"
+    label: Provider records searchable
+  - value: "2"
+    label: Languages — Arabic and English
+  - value: "2-agent"
+    label: Q&A + provider-finder architecture
+diagram:
+  stages:
+    - WHATSAPP
+    - LANGUAGE + INTENT
+    - ROUTER
+  branches:
+    - Q&A RAG
+    - PROVIDER SEARCH
+order: 3
+---
+
+## PROBLEM
+
+Insurance members need two things fast, in their own language: answers to coverage questions, and the nearest in-network clinic, hospital, or pharmacy that matches their plan. Support teams were doing both lookups manually — slow for the member, expensive for the operation.
+
+## MY ROLE
+
+I designed the architecture and built the workflows: the two-agent design, the bilingual knowledge base, the provider dataset pipeline into vector search, the geolocation integration, and the WhatsApp conversational layer.
+
+## SOLUTION ARCHITECTURE
+
+The system routes each message to one of two specialized agents rather than overloading a single prompt:
+
+- **Agent 1 — Q&A:** intent classification plus RAG over an Arabic/English FAQ knowledge base for general insurance and support questions, with Pinecone vector search
+- **Agent 2 — Provider finder:** structured search over 4,400+ provider records, filtered by specialty, network coverage, and location
+- Google Places and Geocoding APIs for location-aware matching ("nearest pharmacy to me")
+- Language detection so members get answers in the language they wrote in
+- WhatsApp as the conversational interface, with Supabase and Google Sheets for state and data access
+
+## TECHNICAL DECISIONS
+
+**Two agents, not one.** Coverage Q&A and provider search have different data, different failure modes, and different output formats. Splitting them kept each prompt small, testable, and accurate instead of one agent doing both jobs badly.
+
+**Structured data for structured questions.** Provider lookup runs against the structured dataset with real filters — RAG handles the unstructured FAQ side only. Vector search is the wrong tool for "pharmacies within 5km that take my plan."
+
+**Bilingual by design, not translation.** The knowledge base exists in both Arabic and English rather than machine-translating answers at runtime, which kept responses idiomatic and on-policy in both languages.
+
+## IMPACT
+
+Provider lookup went from a manual support task to a self-service conversation, the multilingual experience improved for Arabic-first members, and the support team's lookup burden dropped. The POC validated the two-agent pattern for the client's wider AI roadmap.
+
+## WHAT I LEARNED
+
+Location queries are deceptively hard: "near me" requires geocoding, distance logic, and graceful fallbacks when the member's location is ambiguous. The structured-data path needed as much conversational design as the RAG path.
+
+<Privacy>
+Provider data examples are generic. The full provider dataset is not published. Client name anonymized.
+</Privacy>

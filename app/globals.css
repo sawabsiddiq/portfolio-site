@@ -1,26 +1,274 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Core palette — design plan §2.1 */
+  --color-base: #0b0e14;
+  --color-raised: #11151d;
+  --color-overlay: #161b26;
+  --color-line: #1e2530;
+  --color-line-strong: #2c3542;
+  --color-fg: #e6eaf2;
+  --color-fg2: #9aa4b5;
+  --color-fg3: #5c6677;
+  --color-signal: #5fb4d9;
+  --color-live: #4ade80;
+  --color-warn: #e8b45a;
+  --color-codebg: #0d1117;
+
+  --font-sans: var(--font-mona), system-ui, sans-serif;
+  --font-mono: var(--font-plex), ui-monospace, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Motion — design plan §6.1 */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur-base: 450ms;
+  --dur-slow: 800ms;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+::selection {
+  background: color-mix(in srgb, #5fb4d9 25%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-base);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-variation-settings: "wdth" 100;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-signal) 60%, transparent);
+  outline-offset: 2px;
+}
+
+/* ---- Type voices ---- */
+.display-xl {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 600;
+  font-variation-settings: "wdth" 110;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+.display-lg {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 600;
+  font-variation-settings: "wdth" 105;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.heading {
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mono-body {
+  font-family: var(--font-mono);
+  font-size: clamp(13px, 1vw, 14px);
+  font-weight: 400;
+  line-height: 1.6;
+}
+.mono-metric {
+  font-family: var(--font-mono);
+  /* capped at 50px so a 5-digit value fits a 6-column strip cell */
+  font-size: clamp(32px, 3.5vw, 50px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Scroll reveal (one pattern, design plan §6.3) ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--dur-base) var(--ease-out-expo),
+    transform var(--dur-base) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Hero load choreography (§6.2) ---- */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-seq {
+  animation: hero-rise var(--dur-slow) var(--ease-out-expo) both;
+  animation-delay: var(--seq, 0ms);
+}
+
+/* ---- Pipeline ---- */
+@keyframes edge-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.pipeline-edge {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: edge-draw var(--dur-slow) var(--ease-out-expo) forwards;
+  animation-delay: var(--edge-delay, 500ms);
+}
+@keyframes node-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.pipeline-node {
+  opacity: 0;
+  animation: node-fade var(--dur-base) var(--ease-out-expo) forwards;
+  animation-delay: 1100ms;
+}
+.pipeline-node rect {
+  transition: stroke var(--dur-fast) var(--ease-out-expo);
+}
+.pipeline-node.is-pulsing rect {
+  stroke: var(--color-line-strong);
+}
+.pipeline-static .pipeline-edge {
+  animation: none;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+}
+.pipeline-static .pipeline-node {
+  animation: none;
+  opacity: 1;
+}
+
+/* Mini pipeline packet: straight-line traversal, runs while hovered */
+@keyframes mini-packet {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+.mini-packet {
+  opacity: 0;
+}
+.group\/row:hover .mini-packet,
+.group\/row:focus-within .mini-packet {
+  animation: mini-packet 2.4s var(--ease-inout) infinite;
+}
+
+/* ---- Status dot pulse (§6.4) ---- */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+.dot-pulse {
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+@keyframes dot-blink {
+  0%,
+  100% {
+    fill: var(--color-fg3);
+  }
+  50% {
+    fill: var(--color-warn);
+  }
+}
+.dot-blink {
+  animation: dot-blink 600ms ease-in-out 1;
+}
+
+/* ---- Link underline: draws left→right (§6.4) ---- */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 0% 1px;
+  transition: background-size var(--dur-fast) var(--ease-out-expo);
+}
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* ---- Hero radial glow: the single permitted gradient (§2.1) ---- */
+.hero-glow {
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 60%,
+    color-mix(in srgb, var(--color-signal) 5%, transparent),
+    transparent 70%
+  );
+}
+
+/* ---- Reduced motion: final states everywhere (§6.5) ---- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .hero-seq,
+  .pipeline-node {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .pipeline-edge {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+  .dot-pulse,
+  .dot-blink,
+  .mini-packet,
+  .group\/row:hover .mini-packet {
+    animation: none;
+  }
+  .pipeline-packet {
+    display: none;
+  }
 }

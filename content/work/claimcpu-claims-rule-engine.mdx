@@ -1,0 +1,75 @@
+---
+title: ClaimCPU — Claims Rule Engine Platform
+outcome: Client-facing claims decisioning platform with dataset ingestion, rule evaluation, tree-based scoring, RBAC, and tenant-isolated analytics.
+role: Product / Technical Architect + Full-stack Engineer
+domain: Insurance claims
+status: poc
+statusLabel: POC / IN BUILD
+timeline: 2025 — ONGOING
+stack:
+  - React
+  - Vite
+  - TypeScript
+  - Supabase
+  - PostgreSQL
+  - Edge Functions
+  - Jotai
+  - Recharts
+  - SQL / RLS
+impact:
+  - value: "Multi-tenant"
+    label: Company-scoped data isolation via RLS
+  - value: "Tree-based"
+    label: Claims scoring with visualized paths
+  - value: "API-first"
+    label: Detection APIs for client integration
+diagram:
+  stages:
+    - DATASET UPLOAD
+    - COLUMN ALIGN
+    - RULE ENGINE
+    - TREE SCORING
+  branches:
+    - DETECTION API
+    - DASHBOARD
+order: 4
+---
+
+## PROBLEM
+
+Insurance teams need a structured way to upload claim datasets, define rule sets, evaluate claims against them, visualize how a score was reached, and expose controlled detection APIs to clients — all while keeping each company's data strictly isolated.
+
+## MY ROLE
+
+This is the project where I own product thinking as well as engineering: milestone planning, the data model, the rule evaluation engine, the Supabase Edge Function layer, the React frontend, and the RBAC/multi-tenancy design. It's an internal tool being converted into a client-facing platform.
+
+## SOLUTION ARCHITECTURE
+
+- Claims tree parsing and evaluation engine — rules compose into trees, and every score traces to a path through them
+- Ruleset operations and risk classification
+- Dataset upload with column-alignment functions, so client CSVs map cleanly onto the engine's schema
+- Supabase Edge Functions for processing and metrics
+- Company-scoped data model enforced with PostgreSQL row-level security
+- Admin and client roles, with an OTP authentication plan
+- Detection API surface and a pipeline visualizer on the roadmap
+- Audit-friendly logging throughout
+
+## TECHNICAL DECISIONS
+
+**RLS as the tenancy boundary.** Tenant isolation is enforced in the database with row-level security, not in application code — a client can't query another company's claims even if the app layer has a bug.
+
+**Explainable scoring.** Tree-based evaluation means every risk score has a visible path: which rules fired, in what order, with what weights. For a decisioning product in insurance, "the model said so" is not an acceptable answer.
+
+**Edge Functions over a separate backend.** Keeping evaluation and metrics in Supabase Edge Functions kept the deployment surface small while the product finds its shape.
+
+## IMPACT
+
+The platform demonstrates the full conversion of an internal tool into a multi-tenant, client-facing product: architecture, security model, API design, and frontend. It's the strongest single proof of product-plus-engineering ownership in my portfolio.
+
+## WHAT I LEARNED
+
+Multi-tenancy is a design constraint you adopt on day one or retrofit painfully. Starting from company-scoped tables and RLS shaped every later decision — auth, APIs, even how dashboards aggregate.
+
+<Privacy>
+Labeled honestly: this is a platform in active build, not a long-running production system. No client datasets or rule configurations are shown.
+</Privacy>

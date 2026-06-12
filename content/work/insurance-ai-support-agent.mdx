@@ -1,0 +1,80 @@
+---
+title: Insurance AI Support & Claims Assistant
+outcome: Multilingual WhatsApp and email AI support workflow that cut routine manual support workload by 60% for an insurance operation.
+role: AI Architect / Workflow Automation Engineer
+domain: Insurance operations
+status: production
+statusLabel: PRODUCTION
+timeline: 2025 — PRESENT
+stack:
+  - OpenAI
+  - n8n
+  - WhatsApp/WABA
+  - Gupshup
+  - PostgreSQL / Supabase
+  - Outlook
+  - Webhooks
+  - Docker
+  - REST APIs
+impact:
+  - value: "−60%"
+    label: Routine manual support workload
+  - value: "48h"
+    label: Automated follow-up cycle
+  - value: "100%"
+    label: Interactions logged for dashboards
+diagram:
+  stages:
+    - WHATSAPP / EMAIL
+    - INTENT
+    - RAG
+    - DOCS
+    - POSTGRES
+  branches:
+    - HUMAN ESCALATION
+    - AI RESPONSE
+order: 1
+---
+
+## PROBLEM
+
+Insurance support teams receive a steady stream of repetitive questions and claim-related requests over WhatsApp and email: policy queries, renewals, claim intake, document submission, status checks. Each one needs intent detection, an approved response, document collection where relevant, escalation when the AI shouldn't answer, and structured tracking so operations can see what's happening.
+
+Handled manually, this consumes most of a support team's day — and the quality of routing and escalation depends on whoever picks up the message.
+
+## MY ROLE
+
+I owned the system end to end: discovery with business and operations stakeholders, BRD/SRS documentation, workflow architecture, n8n implementation, prompt and output-parser design, database schema for interaction tracking, UAT coordination, deployment support, and production troubleshooting.
+
+## SOLUTION ARCHITECTURE
+
+The system is an n8n-orchestrated agent pipeline (roughly 60–70 nodes in production) with structured output parsing at every AI step:
+
+- Intent classification across policy, claims, renewals, documents, escalation, and feedback
+- RAG over an approved insurance knowledge base, so responses stay on-policy
+- WhatsApp/WABA (via Gupshup) and Outlook email as channels
+- Claim-intake flows with document collection and validation
+- PostgreSQL/Supabase-backed interaction tracking for every conversation
+- Explicit escalation paths for human handoff — the AI knows what it shouldn't answer
+- 48-hour follow-up automation and feedback override handling
+- An analytics layer feeding dashboards for conversations, intents, and escalations
+
+## TECHNICAL DECISIONS
+
+**Structured outputs everywhere.** Every LLM call returns parsed, validated structure — never free text flowing straight to a customer. Malformed outputs fail loudly into an error workflow instead of reaching the channel.
+
+**Escalation as a first-class path.** Escalation isn't an afterthought; it's a designed route with its own logging, so the team can audit what the AI declined to handle and why.
+
+**Database-first tracking.** Logging every interaction to PostgreSQL made the dashboard layer (and the 60% claim itself) possible — you can't report a workload reduction you didn't measure.
+
+## IMPACT
+
+Beyond the headline workload number, routing and escalation became consistent — the same question gets the same treatment at 2pm and 2am — and operations gained structured interaction data where previously there was an inbox.
+
+## WHAT I LEARNED
+
+Production AI support lives or dies on the unhappy paths: malformed messages, mixed languages, customers replying to follow-ups days later, documents arriving out of order. Most of the engineering effort went into those paths, not the happy-path conversation — and that's where the system earns its reliability.
+
+<Privacy>
+Client name anonymized. No customer phone numbers, message content, database schemas, or workflow credentials are shown. Metrics are sourced from internal project reporting.
+</Privacy>
