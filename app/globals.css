@@ -346,6 +346,95 @@ body {
   }
 }
 
+/* ---- Boot sequence: sci-fi cold-boot overlay (first visit, skippable) ---- */
+.boot-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  align-items: flex-start; /* top-anchored to match the hero, not centered */
+  justify-content: center;
+  background: var(--color-base);
+}
+/* shown pre-paint by the inline gate; never flashes on non-boot loads */
+html[data-boot] .boot-overlay {
+  display: flex;
+}
+.boot-overlay.boot-done {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 460ms var(--ease-out-expo);
+}
+.boot-frame {
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 2.6vw, 15px);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--color-fg2);
+}
+.boot-border {
+  display: block;
+  white-space: pre;
+  color: var(--color-fg3);
+}
+.boot-line {
+  display: block;
+  white-space: nowrap;
+  /* clipped from the right by default; revealed by the typing animation.
+     clip-path is composited — no per-frame reflow (vs animating width) */
+  clip-path: inset(0 100% 0 0);
+}
+/* typing only on a real boot load; longhands so the inline steps() survives */
+html[data-boot] .boot-line {
+  animation-name: boot-type;
+  animation-duration: var(--dur, 300ms);
+  animation-delay: var(--delay, 0ms);
+  animation-fill-mode: both;
+}
+@keyframes boot-type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.boot-pre {
+  color: var(--color-fg2);
+}
+.boot-dots {
+  color: var(--color-fg3);
+}
+.boot-val {
+  color: var(--color-fg);
+}
+/* green only beside the availability signal — same rule as the nav pill */
+.boot-live {
+  color: var(--color-live);
+}
+.boot-cursor {
+  display: block;
+  width: 1ch;
+  color: var(--color-signal);
+  opacity: 0;
+}
+html[data-boot] .boot-cursor {
+  animation:
+    boot-cursor-in 1ms linear 1700ms forwards,
+    dot-pulse 1s steps(1, end) 1700ms infinite;
+}
+@keyframes boot-cursor-in {
+  to {
+    opacity: 1;
+  }
+}
+/* the hero waits behind the boot, then draws in when the gate is released */
+html.boot-pause .hero-seq,
+html.boot-pause .pipeline-edge,
+html.boot-pause .pipeline-node {
+  animation-play-state: paused !important;
+}
+
 /* ---- Hero radial glow: the single permitted gradient (§2.1) ---- */
 .hero-glow {
   background: radial-gradient(
@@ -384,7 +473,8 @@ body {
   .pipeline-packet,
   .divider-packet,
   .hero-canvas::after,
-  .glow-overlay {
+  .glow-overlay,
+  .boot-overlay {
     display: none;
   }
 }
