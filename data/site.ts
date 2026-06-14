@@ -1,7 +1,7 @@
 export type Status = "production" | "poc" | "internal" | "experiment";
 
 export const site = {
-  url: "https://sawabpsiddiq.com",
+  url: "https://www.sawabpsiddiq.com",
   email: "sawabsiddiq@gmail.com",
   phone: "+971 501 484 570",
   linkedin: "https://linkedin.com/in/sawabsiddiq",
