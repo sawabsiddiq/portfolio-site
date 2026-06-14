@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import localFont from "next/font/local";
 import { IBM_Plex_Mono } from "next/font/google";
 import { NavBar } from "@/components/NavBar";
@@ -116,6 +117,19 @@ export default function RootLayout({
             <Footer />
           </MotionProvider>
         </div>
+        {/* Google Analytics 4 — loaded after hydration so it never competes
+            with the hero/boot for the main thread. SPA route changes are
+            captured by GA4 Enhanced Measurement (history events). */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-72R06EBCZS"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-72R06EBCZS');`}
+        </Script>
       </body>
     </html>
   );
