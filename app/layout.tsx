@@ -15,7 +15,7 @@ import "./globals.css";
 // real hero, not the boot overlay. A fallback timer self-heals the gate if the
 // React effect never runs (chunk-load/CSP/hydration failure), so content can
 // never get stuck behind a paused hero.
-const bootGate = `(function(){try{var d=document.documentElement;var ua=navigator.userAgent||'';if(/bot|crawl|spider|lighthouse|pagespeed|headless|prerender|gtmetrix/i.test(ua))return;if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('sawab.booted')){d.setAttribute('data-boot','');d.classList.add('boot-pause');window.__bootFallback=setTimeout(function(){try{sessionStorage.setItem('sawab.booted','1')}catch(e){}d.classList.remove('boot-pause');d.removeAttribute('data-boot');var a=document.getElementById('app-root');if(a)a.removeAttribute('inert');},5200);}}catch(e){}})();`;
+const bootGate = `(function(){try{var d=document.documentElement;var ua=navigator.userAgent||'';if(/bot|crawl|spider|lighthouse|pagespeed|headless|prerender|gtmetrix/i.test(ua))return;if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('sawab.booted')){d.setAttribute('data-boot','');d.classList.add('boot-pause');window.__bootFallback=setTimeout(function(){try{sessionStorage.setItem('sawab.booted','1')}catch(e){}d.classList.remove('boot-pause');d.removeAttribute('data-boot');var a=document.getElementById('app-root');if(a)a.removeAttribute('inert');},4200);}}catch(e){}})();`;
 
 const mona = localFont({
   src: "../public/fonts/MonaSans.var.woff2",

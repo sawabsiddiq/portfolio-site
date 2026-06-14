@@ -102,8 +102,8 @@ export function BootSequence() {
     }
 
     attach();
-    // ~4.5s boot: typing finishes ~2.3s, holds with the cursor, then dissolves
-    const autoTimer = window.setTimeout(dissolve, 4050);
+    // ~3.5s boot: typing finishes ~2s, holds with the cursor, then dissolves
+    const autoTimer = window.setTimeout(dissolve, 3050);
     return () => {
       detach();
       window.clearTimeout(hideTimer);
@@ -127,7 +127,7 @@ export function BootSequence() {
             style={
               {
                 "--cols": COLS,
-                "--delay": `${200 + i * 450}ms`,
+                "--delay": `${200 + i * 350}ms`,
                 "--dur": `${Math.min((l.pre.length + l.value.length + 4) * 14, 340)}ms`,
                 animationTimingFunction: `steps(${COLS})`,
               } as React.CSSProperties
