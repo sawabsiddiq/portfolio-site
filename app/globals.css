@@ -420,8 +420,8 @@ html[data-boot] .boot-line {
 }
 html[data-boot] .boot-cursor {
   animation:
-    boot-cursor-in 1ms linear 1700ms forwards,
-    dot-pulse 1s steps(1, end) 1700ms infinite;
+    boot-cursor-in 1ms linear 2400ms forwards,
+    dot-pulse 1s steps(1, end) 2400ms infinite;
 }
 @keyframes boot-cursor-in {
   to {
