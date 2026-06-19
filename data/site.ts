@@ -2,13 +2,35 @@ export type Status = "production" | "poc" | "internal" | "experiment";
 
 export const site = {
   url: "https://www.sawabpsiddiq.com",
+  name: "Sawab Siddiq",
+  displayName: "Sawab P",
+  role: "AI Engineer & Forward Deployed AI Engineer",
+  positioning:
+    "I build production AI agents, RAG systems, automation workflows, internal tools, and enterprise integrations.",
   email: "sawabsiddiq@gmail.com",
   phone: "+971 501 484 570",
   linkedin: "https://linkedin.com/in/sawabsiddiq",
   github: "https://github.com/sawabsiddiq",
   repo: "https://github.com/sawabsiddiq/portfolio-site",
   location: "Dubai, UAE",
+  city: "Dubai",
+  country: "AE",
   resume: "/Sawab-P-Resume.pdf",
+  ogImage: "/og/home.png",
+  knowsAbout: [
+    "AI Agents",
+    "RAG Systems",
+    "LLM Workflows",
+    "Workflow Automation",
+    "Forward Deployed Engineering",
+    "n8n",
+    "OpenAI API",
+    "Python",
+    "FastAPI",
+    "Supabase",
+    "PostgreSQL",
+    "Enterprise Integrations",
+  ],
 };
 
 export const hero = {

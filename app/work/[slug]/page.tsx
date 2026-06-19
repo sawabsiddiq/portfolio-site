@@ -7,6 +7,8 @@ import { FlowDiagram } from "@/components/pipeline/FlowDiagram";
 import { MediaFrame } from "@/components/ui/MediaFrame";
 import { StatusDot } from "@/components/ui/StatusDot";
 import { ReadingProgress } from "@/components/ReadingProgress";
+import { JsonLd } from "@/components/JsonLd";
+import { softwareApplicationSchema } from "@/lib/schema";
 
 export function generateStaticParams() {
   return getAllWork().map((w) => ({ slug: w.slug }));
@@ -23,13 +25,25 @@ export async function generateMetadata({
   return {
     title: work.frontmatter.title,
     description: work.frontmatter.outcome,
+    alternates: { canonical: `/work/${slug}` },
     openGraph: {
+      type: "article",
       title: work.frontmatter.title,
       description: work.frontmatter.outcome,
-      images: [{ url: `/og/${slug}.png`, width: 1200, height: 630 }],
+      url: `/work/${slug}`,
+      images: [
+        {
+          url: `/og/${slug}.png`,
+          width: 1200,
+          height: 630,
+          alt: `${work.frontmatter.title} — case study by Sawab P`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
+      title: work.frontmatter.title,
+      description: work.frontmatter.outcome,
       images: [`/og/${slug}.png`],
     },
   };
@@ -83,6 +97,7 @@ export default async function WorkPage({
 
   return (
     <article className="pt-32 pb-24">
+      <JsonLd schema={softwareApplicationSchema(work)} />
       <ReadingProgress />
       <div className="mx-auto max-w-6xl px-6 lg:px-12">
         <Link href="/#work" className="mono-label link-underline text-fg3 hover:text-fg2">

@@ -53,6 +53,12 @@ export const metadata: Metadata = {
     "WhatsApp Business API automation",
     "Insurance AI automation",
   ],
+  applicationName: site.displayName,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  category: "technology",
+  formatDetection: { email: false, telephone: false, address: false },
   openGraph: {
     title: "Sawab P — AI Engineer & Forward Deployed AI Engineer in Dubai",
     description:
@@ -61,26 +67,32 @@ export const metadata: Metadata = {
     siteName: "Sawab P",
     locale: "en_US",
     type: "website",
-    images: [{ url: "/og/home.png", width: 1200, height: 630 }],
+    images: [
+      {
+        url: site.ogImage,
+        width: 1200,
+        height: 630,
+        alt: "Sawab P — AI Engineer & Forward Deployed AI Engineer, Dubai",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/og/home.png"],
+    title: "Sawab P — AI Engineer & Forward Deployed AI Engineer in Dubai",
+    description:
+      "AI agents, RAG systems, and automation that survive production.",
+    images: [site.ogImage],
   },
-};
-
-const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Sawab P",
-  jobTitle: "AI Engineer / Forward Deployed AI Engineer",
-  email: `mailto:${site.email}`,
-  url: site.url,
-  sameAs: [site.linkedin, site.github],
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Dubai",
-    addressCountry: "AE",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -94,10 +106,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <script dangerouslySetInnerHTML={{ __html: bootGate }} />
         <BootSequence />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-        />
         {/* real flex wrapper (NOT display:contents — inert does not propagate
             through display:contents in Chromium). The boot sets `inert` here
             so focus/clicks can't reach the covered app, then clears it on
