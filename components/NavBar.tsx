@@ -87,7 +87,7 @@ export function NavBar() {
         className="mx-auto flex h-full max-w-6xl items-center justify-between px-6 lg:px-12"
       >
         <Link href="/" className="mono-label text-fg">
-          SAWAB P
+          SAWAB P SIDDIQ
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">

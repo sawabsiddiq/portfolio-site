@@ -7,7 +7,7 @@ export function Contact() {
   return (
     <section id="contact" aria-labelledby="contact-label" className="py-32 max-lg:py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-12">
-        <SectionHeader id="contact" eyebrow="CONTACT" title="Building something operational?" intro={contact.copy} />
+        <SectionHeader id="contact" eyebrow="CONTACT" title="Let's improve how your business works." intro={contact.copy} />
         <Reveal className="mt-12">
           <a
             href={`mailto:${site.email}`}

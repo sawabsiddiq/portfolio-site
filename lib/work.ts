@@ -5,12 +5,15 @@ import type { DiagramSpec, Status } from "@/data/site";
 
 export type WorkFrontmatter = {
   title: string;
+  seoTitle?: string;
+  seoDescription?: string;
   outcome: string;
   role: string;
   domain: string;
   status: Status;
   statusLabel: string;
   timeline: string;
+  contributionNote?: string;
   stack: string[];
   impact: { value: string; label: string }[];
   diagram: DiagramSpec;

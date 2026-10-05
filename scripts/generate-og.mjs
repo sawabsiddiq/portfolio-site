@@ -8,6 +8,7 @@ import { join } from "node:path";
 import matter from "gray-matter";
 
 const ROOT = new URL("..", import.meta.url).pathname;
+const homepage = JSON.parse(readFileSync(join(ROOT, "data/homepage.json"), "utf8"));
 const CHROME =
   process.env.CHROME_BIN ??
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
@@ -70,17 +71,17 @@ const card = ({ eyebrow, title, meta, nodes, status }) => `<!doctype html>
   </div>
   <div class="foot">
     <div class="mono meta">${status ? `<span class="dot${status === "POC" ? " amber" : ""}"></span>` : ""}${meta}</div>
-    <div class="mono meta">SAWAB P · DUBAI</div>
+    <div class="mono meta">SAWAB P SIDDIQ · DUBAI</div>
   </div>
 </body>`;
 
 const cards = [
   {
     slug: "home",
-    eyebrow: "FORWARD DEPLOYED AI ENGINEER · DUBAI",
-    title: "AI agents, RAG systems, and automation that survive production.",
-    meta: "4.5+ YRS · 300+ AUTOMATIONS · 60% WORKLOAD CUT",
-    nodes: ["WHATSAPP", "INTENT", "RAG", "ESCALATE"],
+    eyebrow: homepage.eyebrow,
+    title: homepage.headline.join(" "),
+    meta: homepage.proofRow.slice(0, 3).join(" · "),
+    nodes: ["PROCESS", "AI WORKFLOW", "INTEGRATION", "OUTCOME"],
     status: null,
   },
   ...readdirSync(join(ROOT, "content/work"))

@@ -17,7 +17,7 @@ export function Hero() {
         <h1 className="display-xl mt-6 max-w-[18ch] text-fg">
           {hero.headline.map((line, i) => (
             <span key={line} className="hero-seq block" style={seq(100 + i * 80)}>
-              {line}
+              {line}{i < hero.headline.length - 1 ? " " : null}
             </span>
           ))}
         </h1>

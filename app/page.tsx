@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { Metrics } from "@/components/sections/Metrics";
+import { Capabilities } from "@/components/sections/Capabilities";
 import { FeaturedWork } from "@/components/sections/FeaturedWork";
 import { Archive } from "@/components/sections/Archive";
 import { Experience } from "@/components/sections/Experience";
@@ -21,6 +22,8 @@ export default function Home() {
       <JsonLd schema={[personSchema(), websiteSchema()]} />
       <Hero />
       <Metrics />
+      <SectionDivider />
+      <Capabilities />
       <SectionDivider />
       <FeaturedWork />
       <SectionDivider />

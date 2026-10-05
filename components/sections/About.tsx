@@ -23,6 +23,14 @@ export function About() {
                 </dd>
               </div>
               <div>
+                <dt className="mono-label text-fg3">CERTIFICATIONS</dt>
+                <dd className="mt-1 space-y-2 text-fg2">
+                  {about.certifications.map((certification) => (
+                    <p key={certification}>{certification}</p>
+                  ))}
+                </dd>
+              </div>
+              <div>
                 <dt className="mono-label text-fg3">STATUS</dt>
                 <dd className="mt-1 inline-flex items-center gap-2 text-fg2">
                   <span aria-hidden className="size-2 rounded-full bg-live dot-pulse" />

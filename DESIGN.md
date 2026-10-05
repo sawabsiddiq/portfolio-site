@@ -141,10 +141,10 @@ Implementation: hand-written inline SVG + a small rAF loop. No canvas, no Three.
 Build exactly these; resist inventing more. A small, consistent kit is what "clean" means in practice.
 
 - **UI** (`components/ui/`): `Button` (primary signal-border / ghost), `Chip` (stack tag, non-interactive), `StatusDot` (live-pulse / warn / neutral), `SectionHeader` + `SectionDivider`, `MediaFrame` (device-neutral frame with three mono dots + filename), `Tracked` (cursor sheen).
-- **Sections** (`components/sections/`): `Hero`, `Metrics` (count-up strip), `FeaturedWork` (full-width rows, not a card grid), `Archive` (compact table), `Experience` (left rail + node-dots), `Stack` (two-tone definition list), `About` (the one blockquote), `Contact` (mailto as the design element).
+- **Sections** (`components/sections/`): `Hero`, `Metrics` (count-up strip), `Capabilities` (business problems, implementation, and evidence links in bordered rows), `FeaturedWork` (full-width rows, not a card grid), `Archive` (compact table), `Experience` (left rail + node-dots), `Stack` (two-tone definition list), `About` (the one blockquote), `Contact` (mailto as the design element).
 - **Pipeline** (`components/pipeline/`): `PipelineSVG`, `MobilePipeline`, `FlowDiagram`, `HeroCanvas`.
 - **Chrome:** `NavBar` (sliding underline, scroll-border), `Footer` (live `UPTIME` + `VIEW SOURCE`), `ReadingProgress`, `BootSequence` (sci-fi cold-boot), `JsonLd`.
-- **Logic** (`lib/`): `motion.tsx` (Reveal, useReducedMotion, useCountUp), `schema.ts` (JSON-LD), `color.ts` (muteBrand), `brand-icons.ts`, `work.ts` (MDX loader). Content lives in `data/site.ts` + `content/work/*.mdx`.
+- **Logic** (`lib/`): `motion.tsx` (Reveal, useReducedMotion, useCountUp), `schema.ts` (JSON-LD), `color.ts` (muteBrand), `brand-icons.ts`, `work.ts` (MDX loader). Content lives in `data/site.ts` + `content/work/*.mdx`; `data/homepage.json` keeps the hero, homepage metadata, and social image copy aligned.
 
 ---
 

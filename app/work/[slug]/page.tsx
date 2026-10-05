@@ -9,6 +9,7 @@ import { StatusDot } from "@/components/ui/StatusDot";
 import { ReadingProgress } from "@/components/ReadingProgress";
 import { JsonLd } from "@/components/JsonLd";
 import { softwareApplicationSchema } from "@/lib/schema";
+import { site } from "@/data/site";
 
 export function generateStaticParams() {
   return getAllWork().map((w) => ({ slug: w.slug }));
@@ -22,28 +23,30 @@ export async function generateMetadata({
   const { slug } = await params;
   const work = getWork(slug);
   if (!work) return {};
+  const title = work.frontmatter.seoTitle ?? work.frontmatter.title;
+  const description = work.frontmatter.seoDescription ?? work.frontmatter.outcome;
   return {
-    title: work.frontmatter.title,
-    description: work.frontmatter.outcome,
+    title,
+    description,
     alternates: { canonical: `/work/${slug}` },
     openGraph: {
       type: "article",
-      title: work.frontmatter.title,
-      description: work.frontmatter.outcome,
+      title,
+      description,
       url: `/work/${slug}`,
       images: [
         {
           url: `/og/${slug}.png`,
           width: 1200,
           height: 630,
-          alt: `${work.frontmatter.title} — case study by Sawab P`,
+          alt: `${work.frontmatter.title} — case study by ${site.displayName}`,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: work.frontmatter.title,
-      description: work.frontmatter.outcome,
+      title,
+      description,
       images: [`/og/${slug}.png`],
     },
   };
@@ -119,8 +122,8 @@ export default async function WorkPage({
           {[
             ["ROLE", fm.role],
             ["DOMAIN", fm.domain],
-            ["STATUS", fm.statusLabel],
-            ["TIMELINE", fm.timeline],
+            ["STATUS DURING MY WORK", fm.statusLabel],
+            ["MY CONTRIBUTION", fm.timeline],
           ].map(([k, v]) => (
             <div key={k} className="bg-raised px-5 py-4">
               <dt className="mono-label text-fg3">{k}</dt>
@@ -132,6 +135,11 @@ export default async function WorkPage({
             <dd className="mt-1 text-fg2">{fm.stack.join(" · ")}</dd>
           </div>
         </dl>
+        {fm.contributionNote && (
+          <p className="mt-5 max-w-[62ch] text-sm leading-relaxed text-fg2">
+            {fm.contributionNote}
+          </p>
+        )}
 
         {/* architecture diagram in the site's own language */}
         <div className="mt-16">

@@ -1,11 +1,14 @@
 ---
-title: Insurance AI Support & Claims Assistant
-outcome: Multilingual WhatsApp and email AI support workflow that cut routine manual support workload by 60% for an insurance operation.
+title: AIVA — Insurance AI Support & Claims Chatbot
+seoTitle: "AIVA: Insurance AI Support & Claims Automation"
+seoDescription: "How Sawab P Siddiq built AIVA with OpenAI, n8n, WhatsApp and RAG to automate insurance support and claims intake, reducing routine manual support workload by 60%."
+outcome: Multilingual AI chatbot I built for WhatsApp and email support, cutting routine manual support workload by 60% for an insurance operation.
 role: AI Architect / Workflow Automation Engineer
 domain: Insurance operations
 status: production
 statusLabel: PRODUCTION
-timeline: 2025 — PRESENT
+timeline: 2025 — AUG 2026
+contributionNote: My contributions to AIVA and AIVA Dashboard ended when I left eData in August 2026. This case study describes the systems during my involvement.
 stack:
   - OpenAI
   - n8n
@@ -44,7 +47,9 @@ Handled manually, this consumes most of a support team's day — and the quality
 
 ## MY ROLE
 
-I owned the system end to end: discovery with business and operations stakeholders, BRD/SRS documentation, workflow architecture, n8n implementation, prompt and output-parser design, database schema for interaction tracking, UAT coordination, deployment support, and production troubleshooting.
+I built AIVA, the multilingual chatbot for insurance support and motor claims, and owned its delivery end to end: discovery with business and operations stakeholders, BRD/SRS documentation, workflow architecture, n8n implementation, prompt and output-parser design, database schema for interaction tracking, UAT coordination, deployment support, and production troubleshooting.
+
+I also built AIVA Dashboard as a separate application to monitor the chatbot's activity. It brought conversations, intent trends, escalations, and operational KPIs into one monitoring interface.
 
 ## SOLUTION ARCHITECTURE
 
@@ -57,7 +62,7 @@ The system is an n8n-orchestrated agent pipeline (roughly 60–70 nodes in produ
 - PostgreSQL/Supabase-backed interaction tracking for every conversation
 - Explicit escalation paths for human handoff — the AI knows what it shouldn't answer
 - 48-hour follow-up automation and feedback override handling
-- An analytics layer feeding dashboards for conversations, intents, and escalations
+- AIVA Dashboard, the separate monitoring application I built for the chatbot's conversations, intents, escalations, and operational KPIs
 
 ## TECHNICAL DECISIONS
 

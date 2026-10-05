@@ -10,7 +10,7 @@ export function Experience() {
         <SectionHeader
           id="experience"
           eyebrow="EXPERIENCE"
-          title="4.5+ years from workflow automation to forward deployed AI."
+          title="5 years from workflow automation to forward deployed AI."
         />
         <ol className="relative mt-16 ml-1 border-l border-line-strong max-md:ml-0">
           {experience.map((e) => (

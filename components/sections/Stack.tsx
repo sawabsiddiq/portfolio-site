@@ -8,9 +8,9 @@ import { stack } from "@/data/site";
  */
 export function Stack() {
   return (
-    <section aria-labelledby="stack-label" className="py-32 max-lg:py-20">
+    <section id="stack" aria-labelledby="stack-label" className="py-32 max-lg:py-20">
       <div className="mx-auto max-w-6xl px-6 lg:px-12">
-        <SectionHeader id="stack" eyebrow="STACK" title="Tools, grouped by what they're for." />
+        <SectionHeader id="stack" eyebrow="STACK" title="AI, automation, and integration skills." />
         <dl className="mt-16 border-t border-line">
           {stack.map((g, i) => (
             <Reveal

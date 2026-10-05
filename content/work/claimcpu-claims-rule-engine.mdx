@@ -1,11 +1,14 @@
 ---
 title: ClaimCPU — Claims Rule Engine Platform
+seoTitle: "ClaimCPU: Claims Rules & Decision Engine"
+seoDescription: "Sawab P Siddiq's ClaimCPU case study: claims rule evaluation, explainable tree scoring, dataset ingestion and company-scoped access with React and Supabase."
 outcome: Client-facing claims decisioning platform with dataset ingestion, rule evaluation, tree-based scoring, RBAC, and tenant-isolated analytics.
 role: Product / Technical Architect + Full-stack Engineer
 domain: Insurance claims
 status: poc
-statusLabel: POC / IN BUILD
-timeline: 2025 — ONGOING
+statusLabel: POC
+timeline: 2025 — AUG 2026
+contributionNote: My contributions to ClaimCPU ended when I left eData in August 2026. The implementation and roadmap described here reflect my period of involvement.
 stack:
   - React
   - Vite
@@ -21,8 +24,8 @@ impact:
     label: Company-scoped data isolation via RLS
   - value: "Tree-based"
     label: Claims scoring with visualized paths
-  - value: "API-first"
-    label: Detection APIs for client integration
+  - value: "Explainable"
+    label: Rule paths behind claims scores
 diagram:
   stages:
     - DATASET UPLOAD
@@ -30,7 +33,7 @@ diagram:
     - RULE ENGINE
     - TREE SCORING
   branches:
-    - DETECTION API
+    - EXPLANATION
     - DASHBOARD
 order: 4
 ---
@@ -41,7 +44,7 @@ Insurance teams need a structured way to upload claim datasets, define rule sets
 
 ## MY ROLE
 
-This is the project where I own product thinking as well as engineering: milestone planning, the data model, the rule evaluation engine, the Supabase Edge Function layer, the React frontend, and the RBAC/multi-tenancy design. It's an internal tool being converted into a client-facing platform.
+I owned product thinking as well as engineering: milestone planning, the data model, the rule evaluation engine, the Supabase Edge Function layer, the React frontend, and the RBAC/multi-tenancy design. My work focused on converting an internal tool into a client-facing platform.
 
 ## SOLUTION ARCHITECTURE
 
@@ -51,7 +54,7 @@ This is the project where I own product thinking as well as engineering: milesto
 - Supabase Edge Functions for processing and metrics
 - Company-scoped data model enforced with PostgreSQL row-level security
 - Admin and client roles, with an OTP authentication plan
-- Detection API surface and a pipeline visualizer on the roadmap
+- Detection API surface and a pipeline visualizer planned on the roadmap during my involvement
 - Audit-friendly logging throughout
 
 ## TECHNICAL DECISIONS
@@ -60,16 +63,16 @@ This is the project where I own product thinking as well as engineering: milesto
 
 **Explainable scoring.** Tree-based evaluation means every risk score has a visible path: which rules fired, in what order, with what weights. For a decisioning product in insurance, "the model said so" is not an acceptable answer.
 
-**Edge Functions over a separate backend.** Keeping evaluation and metrics in Supabase Edge Functions kept the deployment surface small while the product finds its shape.
+**Edge Functions over a separate backend.** Keeping evaluation and metrics in Supabase Edge Functions kept the deployment surface small while the product took shape.
 
 ## IMPACT
 
-The platform demonstrates the full conversion of an internal tool into a multi-tenant, client-facing product: architecture, security model, API design, and frontend. It's the strongest single proof of product-plus-engineering ownership in my portfolio.
+My work covered the transition from an internal tool toward a multi-tenant, client-facing product: architecture, security model, API design, and frontend. It demonstrates product and engineering ownership, with the detection API and pipeline visualizer documented as roadmap items rather than completed capabilities.
 
 ## WHAT I LEARNED
 
 Multi-tenancy is a design constraint you adopt on day one or retrofit painfully. Starting from company-scoped tables and RLS shaped every later decision — auth, APIs, even how dashboards aggregate.
 
 <Privacy>
-Labeled honestly: this is a platform in active build, not a long-running production system. No client datasets or rule configurations are shown.
+The platform was a POC in development during my involvement, which ended in August 2026. No client datasets or rule configurations are shown.
 </Privacy>

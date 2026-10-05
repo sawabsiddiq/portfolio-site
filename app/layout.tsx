@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { BootSequence } from "@/components/BootSequence";
 import { MotionProvider } from "@/lib/motion";
 import { site } from "@/data/site";
+import homepage from "@/data/homepage.json";
 import "./globals.css";
 
 // Runs before first paint: decides whether the cold-boot plays this load.
@@ -36,23 +37,10 @@ const plex = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Sawab P — AI Engineer & Forward Deployed AI Engineer in Dubai",
-    template: "%s — Sawab P",
+    default: homepage.title,
+    template: `%s — ${site.displayName}`,
   },
-  description:
-    "Portfolio of Sawab P, an AI Engineer and Forward Deployed AI Engineer in Dubai building AI agents, RAG systems, n8n automations, Supabase/PostgreSQL platforms, and enterprise workflow integrations.",
-  keywords: [
-    "AI Engineer Dubai",
-    "Forward Deployed AI Engineer",
-    "AI Workflow Automation",
-    "n8n Automation",
-    "RAG Systems",
-    "AI Agents",
-    "OpenAI API",
-    "Supabase PostgreSQL",
-    "WhatsApp Business API automation",
-    "Insurance AI automation",
-  ],
+  description: homepage.description,
   applicationName: site.displayName,
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
@@ -60,11 +48,10 @@ export const metadata: Metadata = {
   category: "technology",
   formatDetection: { email: false, telephone: false, address: false },
   openGraph: {
-    title: "Sawab P — AI Engineer & Forward Deployed AI Engineer in Dubai",
-    description:
-      "AI agents, RAG systems, and automation that survive production.",
+    title: homepage.title,
+    description: homepage.description,
     url: site.url,
-    siteName: "Sawab P",
+    siteName: site.displayName,
     locale: "en_US",
     type: "website",
     images: [
@@ -72,15 +59,14 @@ export const metadata: Metadata = {
         url: site.ogImage,
         width: 1200,
         height: 630,
-        alt: "Sawab P — AI Engineer & Forward Deployed AI Engineer, Dubai",
+        alt: `${site.displayName} — Applied AI Engineer in Dubai`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sawab P — AI Engineer & Forward Deployed AI Engineer in Dubai",
-    description:
-      "AI agents, RAG systems, and automation that survive production.",
+    title: homepage.title,
+    description: homepage.description,
     images: [site.ogImage],
   },
   robots: {

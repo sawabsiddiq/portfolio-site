@@ -17,7 +17,8 @@ export function FeaturedWork() {
         <SectionHeader
           id="work"
           eyebrow="FEATURED WORK"
-          title="Systems that run real operations."
+          title="AI and automation case studies."
+          intro="Selected work across customer support, recruitment, healthcare search, and claims decisioning — the business problem, the engineering decisions, and the outcome."
         />
         <div className="mt-16 border-t border-line">
           {featured.map((p, i) => (
